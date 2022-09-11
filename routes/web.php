@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::Resource('products', ProductController::class)->only(['index','create','store','edit', 'update','destroy']);
+Route::get('products/index',[ProductController::class,'index'])->name('products.index');
+
+
+
+
