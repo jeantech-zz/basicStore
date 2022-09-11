@@ -36,7 +36,6 @@
 										<th>Description</th>
 										<th>Price</th>
 										<th>Quantity</th>
-										<th>Disable At</th>
 										<th>Image</th>
 
                                         <th></th>
@@ -52,8 +51,8 @@
 											<td>{{ $product->description }}</td>
 											<td>{{ $product->price }}</td>
 											<td>{{ $product->quantity }}</td>
-											<td>{{ $product->disable_at }}</td>
-											<td>{{ $product->image }}</td>
+                                            <td><img src="{{ $product->image }}" width="60" height="60" /></td>
+
 
                                             <td>
 
