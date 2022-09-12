@@ -8,14 +8,9 @@ use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
+    public function test_order_screen_can_be_rendered():void
     {
-        $response = $this->get('/');
+        $response = $this->get('orders');
 
         $response->assertStatus(200);
     }
