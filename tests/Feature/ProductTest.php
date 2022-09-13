@@ -22,7 +22,7 @@ class ProductTest extends TestCase
         $product = Product::factory()->create();
         $response = $this->post('products/addProductOrder/'.$product->id);
 
-        $response->assertRedirect(route('products.index'));
+        $response->assertRedirect(route('orders.index'));
 
     }
 }

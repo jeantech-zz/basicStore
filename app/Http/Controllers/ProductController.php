@@ -30,7 +30,8 @@ class ProductController extends Controller
 
     public function addProductOrder (Product $product): RedirectResponse
     {
-        $order = StoreOrderActions::execute();
+        $userId= auth()->id();
+        $order = StoreOrderActions::execute($userId);
 
         $orderProduct = StoreUpdateOrderProductActions::execute($order, $product);
 

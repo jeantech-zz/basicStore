@@ -13,8 +13,11 @@ class ColeccionsOrdersRepositories implements OrdersRepositories
 
     public function orderId (Order $order)
     {
-        return Order::select('orders.*', 'users.name As userName')
+       /* return Order::select('orders.*', 'users.name As userName')
         ->join('users', 'orders.user_id', '=', 'users.id')
+        ->where('orders.id',$order->id)
+        ->first();*/
+        return Order::select('orders.*')
         ->where('orders.id',$order->id)
         ->first();
     }

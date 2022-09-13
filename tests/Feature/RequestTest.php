@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Actions\Order\StoreOrderActions;
 use App\Actions\Request\StoreRequestActions;
 use App\Constants\Constants;
+use App\Models\User;
 use App\PaymentGateways\Placetopay;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,7 +16,8 @@ class RequestTest extends TestCase
     use RefreshDatabase;
     public function test_store_request_actions()
     {
-        $order = StoreOrderActions::execute();
+        $user = User::factory()->create();
+        $order = StoreOrderActions::execute($user->id);
         $arrayPay = [
             'reference' => 1,
             'total' => 1000,
