@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Product
+    Order
 @endsection
 
 @section('content')
@@ -13,9 +13,8 @@
                         <div style="display: flex; justify-content: space-between; align-items: center;">
 
                             <span id="card_title">
-                                {{ __('Product') }}
+                                {{ __('Order') }}
                             </span>
-
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -31,33 +30,31 @@
                                     <tr>
                                         <th>No</th>
 
-										<th>Code</th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Price</th>
-										<th>Quantity</th>
-										<th>Image</th>
-                                        <th>Add Car</th>
+										<th>User Id</th>
+										<th>Customer Name</th>
+										<th>Customer Email</th>
+										<th>Customer Mobile</th>
+										<th>Total</th>
+										<th>Currency</th>
+										<th>Status</th>
+
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($products as $product)
+                                    @foreach ($orders as $order)
                                         <tr>
                                             <td>{{ ++$i }}</td>
 
-											<td>{{ $product->code }}</td>
-											<td>{{ $product->name }}</td>
-											<td>{{ $product->description }}</td>
-											<td>{{ $product->price }}</td>
-											<td>{{ $product->quantity }}</td>
-                                            <td><img src="{{ $product->image }}" width="60" height="60" /></td>
+											<td>{{ $order->user_id }}</td>
+											<td>{{ $order->customer_name }}</td>
+											<td>{{ $order->customer_email }}</td>
+											<td>{{ $order->customer_mobile }}</td>
+											<td>{{ $order->total }}</td>
+											<td>{{ $order->currency }}</td>
+											<td>{{ $order->status }}</td>
                                             <td>
-                                             <form action="{{ route('products.addProductOrder',$product->id) }}" method="POST">
-                                                @csrf
-                                                @method('POST')
-                                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-trash"></i> add</button>
-                                            </form>
+                                                <a class="btn btn-sm btn-success" href="{{ route('orders.edit',$order) }}"><i class="fa fa-fw fa-edit"></i> Pay </a>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -66,7 +63,7 @@
                         </div>
                     </div>
                 </div>
-                {!! $products->links() !!}
+                {!! $orders->links() !!}
             </div>
         </div>
     </div>
