@@ -37,7 +37,7 @@
 										<th>Price</th>
 										<th>Quantity</th>
 										<th>Image</th>
-
+                                        <th>Add Car</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -53,9 +53,12 @@
 											<td>{{ $product->quantity }}</td>
                                             <td><img src="{{ $product->image }}" width="60" height="60" /></td>
 
-
                                             <td>
-
+                                             <form action="{{ route('products.addProductOrder',$product->id) }}" method="POST">
+                                                @csrf
+                                                @method('POST')
+                                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-trash"></i> add</button>
+                                            </form>
                                             </td>
                                         </tr>
                                     @endforeach
