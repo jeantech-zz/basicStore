@@ -9,4 +9,13 @@ class Request extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'order_id',
+        'reference',
+        'description',
+        'returnUrl' ,
+        'response',
+        'processUrl',
+        'requestId'
+        ];
 }
