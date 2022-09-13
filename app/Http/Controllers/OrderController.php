@@ -30,10 +30,9 @@ class OrderController extends Controller
         $this->paymentGeteway = new Placetopay;
         $this->returnUrl = Constants::URL_RETURN_PLACETOPAY;
         $this->descriptionPlacetoPay = Constants::DESCRIPTION_PLACETOPAY;
-
     }
 
-    public function index():View
+    public function index(): View
     {
         $orders = $this->coleccionOrders->listOrder();
 
@@ -41,31 +40,31 @@ class OrderController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * $orders->perPage());
     }
 
-    public function edit(Order $order):View
+    public function edit(Order $order): View
     {
         $order = $this->coleccionOrders->orderId($order);
         return view('order.edit', compact('order'));
     }
 
-   public function orderPay(UpdateRequest $request): RedirectResponse
+    public function orderPay(UpdateRequest $request): RedirectResponse
     {
         $arrayPay = $this->makePay($request->validated());
         $orderRequest = $this->coleccionOrders->requestOrder($request->id);
         $dataOrder = $request->validated();
 
-        if($orderRequest==null || $orderRequest->requestId==null   ){
+        if ($orderRequest == null || $orderRequest->requestId == null) {
             return  PayOrderActions::execute($arrayPay, $dataOrder, $this->paymentGeteway);
         }
         return PayOrderActions::execute($arrayPay, $dataOrder, $this->paymentGeteway);
     }
 
-    private function makePay (array $data):array
+    private function makePay(array $data): array
     {
         return  [
             'reference' => $data['id'],
             'total' => $data['total'],
-            'returnUrl' => $this->returnUrl.'/'.$data['id'],
-            'description' => $this->descriptionPlacetoPay .' '.$data['id'],
+            'returnUrl' => $this->returnUrl . '/' . $data['id'],
+            'description' => $this->descriptionPlacetoPay . ' ' . $data['id'],
             'currency' => $data['currency']
         ];
     }

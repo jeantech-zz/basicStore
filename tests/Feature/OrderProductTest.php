@@ -19,10 +19,9 @@ class OrderProductTest extends TestCase
         $user = User::factory()->create();
         $order = StoreOrderActions::execute($user->id);
         $product = Product::factory()->create();
-        $orderProduct = StoreUpdateOrderProductActions::execute( $order, $product);
+        $orderProduct = StoreUpdateOrderProductActions::execute($order, $product);
 
         $this->assertSame((int)$orderProduct->product_id, 1);
         $this->assertSame((int)$orderProduct->quantity, 1);
-
     }
 }

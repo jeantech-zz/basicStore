@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Config;
 
 class PayOrderActions
 {
-    public static function execute(array $dataPay, array $dataOrder, PaymentGatewayContract $paymentGeteway):RedirectResponse
+    public static function execute(array $dataPay, array $dataOrder, PaymentGatewayContract $paymentGeteway): RedirectResponse
     {
         $response = $paymentGeteway->createSession($dataPay);
 
@@ -22,7 +22,7 @@ class PayOrderActions
             'order_id' => $dataOrder['id'],
             'reference' => $dataOrder['id'],
             'returnUrl' => $returnUrl,
-            'description' =>  $descriptionPlacetoPay.' '.$dataOrder['id'],
+            'description' =>  $descriptionPlacetoPay . ' ' . $dataOrder['id'],
             'response' => json_encode($response),
             'processUrl' => $response['processUrl'],
             'requestId' => $response['requestId']
@@ -30,20 +30,16 @@ class PayOrderActions
 
         StoreRequestActions::execute($dataRequest);
 
-        if ($response['status']['status'] == 'OK'){
+        if ($response['status']['status'] == 'OK') {
             $dataOrder['status'] = Constants::STATUS_ORDER_INPROCESS_PAY;
             $coleccionOrders = new ColeccionsOrdersRepositories;
             $order = $coleccionOrders->order($dataOrder['id']);
-            UpdateOrderActions::execute( $order, $dataOrder);
+            UpdateOrderActions::execute($order, $dataOrder);
             return redirect()->away($response['processUrl']);
         }
 
         $dataOrder['status'] = Constants::STATUS_ORDER_REJECTED;
         UpdateOrderActions::execute($dataOrder['id'], $dataOrder);
         return redirect()->route('orders.edit', $dataOrder)->with('success', 'Order Reject successfully.');
-
     }
-
-
 }
-
