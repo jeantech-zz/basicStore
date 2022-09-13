@@ -52,7 +52,6 @@
 											<td>{{ $product->price }}</td>
 											<td>{{ $product->quantity }}</td>
                                             <td><img src="{{ $product->image }}" width="60" height="60" /></td>
-
                                             <td>
                                              <form action="{{ route('products.addProductOrder',$product->id) }}" method="POST">
                                                 @csrf
