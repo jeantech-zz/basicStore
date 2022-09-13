@@ -15,7 +15,7 @@ class StoreOrderActions
 
         $order = Order::Where('user_id',auth()->id())
         ->Where('status', $statusInprocess )->first();
-//auth()->id(),
+
         if(!$order ){
             $order = Order::create([
                 'user_id' => $userId,
