@@ -25,6 +25,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::Resource('orders', OrderController::class)->only(['index','store','edit', 'update']);
 Route::get('products/index',[ProductController::class,'index'])->name('products.index');
 Route::post('/products/addProductOrder/{product}', [ProductController::class, 'addProductOrder'])->name('products.addProductOrder');
+Route::post('/orders/orderPay/{order}', [OrderController::class, 'orderPay'])->name('orders.orderPay');
 
 
 

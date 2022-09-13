@@ -16,10 +16,10 @@
                         <span class="card-title">Update Order</span>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="{{ route('orders.update', $order->id) }}"  role="form" enctype="multipart/form-data">
-                            {{ method_field('PATCH') }}
-                            @csrf
+                        <form method="POST" action="{{ route('orders.orderPay', $order) }}"  role="form" enctype="multipart/form-data">
 
+                            @csrf
+dd
                             @include('order.form')
 
                         </form>
