@@ -36,7 +36,7 @@ class ProductController extends Controller
 
         $orderUpdate = UpdateOrderActions::execute($order);
 
-        return redirect()->route('products.index')->with('success', 'Product Update successfully.');
+        return redirect()->route('orders.index')->with('success', 'Add Product successfully.');
     }
 
 
