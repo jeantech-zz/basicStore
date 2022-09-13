@@ -21,8 +21,8 @@ class RequestTest extends TestCase
         $arrayPay = [
             'reference' => 1,
             'total' => 1000,
-            'returnUrl' =>  Constants::URL_RETURN_PLACETOPAY.'/1',
-            'description' => Constants::DESCRIPTION_PLACETOPAY." 1",
+            'returnUrl' =>  Constants::URL_RETURN_PLACETOPAY . '/1',
+            'description' => Constants::DESCRIPTION_PLACETOPAY . " 1",
             'currency' => Constants::CURRENCY
         ];
 
@@ -34,7 +34,7 @@ class RequestTest extends TestCase
             'order_id' => $order->id,
             'reference' => "1",
             'returnUrl' => Constants::URL_RETURN_PLACETOPAY,
-            'description' =>Constants::DESCRIPTION_PLACETOPAY,
+            'description' => Constants::DESCRIPTION_PLACETOPAY,
             'response' => json_encode($responsePay),
             'processUrl' => $responsePay['processUrl'],
             'requestId' => $responsePay['requestId']
@@ -43,7 +43,6 @@ class RequestTest extends TestCase
         $requestAction = StoreRequestActions::execute($data);
 
         $this->assertSame((int)$requestAction->order_id, $order->id);
-        $this->assertSame((int)$requestAction->requestId,$responsePay['requestId']);
-
+        $this->assertSame((int)$requestAction->requestId, $responsePay['requestId']);
     }
 }

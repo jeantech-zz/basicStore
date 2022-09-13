@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
-    public function test_product_screen_can_be_rendered():void
+    public function test_product_screen_can_be_rendered(): void
     {
         $response = $this->get('products/index');
 
@@ -20,9 +20,8 @@ class ProductTest extends TestCase
     public function test_add_product_order_screen_can_be_rendered()
     {
         $product = Product::factory()->create();
-        $response = $this->post('products/addProductOrder/'.$product->id);
+        $response = $this->post('products/addProductOrder/' . $product->id);
 
         $response->assertRedirect(route('orders.index'));
-
     }
 }

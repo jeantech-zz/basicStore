@@ -2,6 +2,9 @@
     <div class="box-body">
 
         <div class="form-group">
+        <input id="id" name="id" type="hidden" value={{ $order->id}} >
+        </div>
+        <div class="form-group">
             {{ Form::label('user_name') }}
             {{ Form::text('user_id', $order->userName, ['class' => 'form-control' . ($errors->has('user_id') ? ' is-invalid' : ''), 'placeholder' => 'User Id']) }}
             {!! $errors->first('user_id', '<div class="invalid-feedback">:message</div>') !!}

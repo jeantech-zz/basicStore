@@ -13,10 +13,10 @@ class StoreOrderActions
         $statusInprocess =  Constants::STATUS_ORDER_INPROCESS;
         $currency = Constants::CURRENCY;
 
-        $order = Order::Where('user_id',auth()->id())
-        ->Where('status', $statusInprocess )->first();
-//auth()->id(),
-        if(!$order ){
+        $order = Order::Where('user_id', auth()->id())
+            ->Where('status', $statusInprocess)->first();
+
+        if (!$order) {
             $order = Order::create([
                 'user_id' => $userId,
                 'total' => 1,
@@ -25,7 +25,5 @@ class StoreOrderActions
             ]);
         }
         return  $order;
-
     }
 }
-

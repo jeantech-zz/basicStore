@@ -18,7 +18,7 @@ class OrderTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_order_screen_can_be_rendered():void
+    public function test_order_screen_can_be_rendered(): void
     {
         $response = $this->get('orders');
 
@@ -28,19 +28,19 @@ class OrderTest extends TestCase
     public function test_create_action_order()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute( $user->id);
+        $order = StoreOrderActions::execute($user->id);
 
         $this->assertSame((int)$order->total, 1);
         $this->assertSame((string)$order->status, "INPROCESS");
-        $this->assertSame((string)$order->currency,"COP");
+        $this->assertSame((string)$order->currency, "COP");
     }
 
     public function test_update_action_order()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute( $user->id);
+        $order = StoreOrderActions::execute($user->id);
         $product = Product::factory()->create();
-        $orderProduct = StoreUpdateOrderProductActions::execute( $order, $product);
+        $orderProduct = StoreUpdateOrderProductActions::execute($order, $product);
 
         $statusInprocess =  Constants::STATUS_ORDER_INPROCESS;
         $data = [
@@ -51,9 +51,8 @@ class OrderTest extends TestCase
             'status' => $statusInprocess,
         ];
 
-        $order = UpdateOrderActions::execute( $order, $data );
+        $order = UpdateOrderActions::execute($order, $data);
         $this->assertTrue($order);
-
     }
 
     public function test_edit_order_screen_can_be_rendered()
@@ -73,8 +72,8 @@ class OrderTest extends TestCase
         $arrayPay = [
             'reference' => 1,
             'total' => 1000,
-            'returnUrl' =>  Constants::URL_RETURN_PLACETOPAY.'/1',
-            'description' => Constants::DESCRIPTION_PLACETOPAY." 1",
+            'returnUrl' =>  Constants::URL_RETURN_PLACETOPAY . '/1',
+            'description' => Constants::DESCRIPTION_PLACETOPAY . " 1",
             'currency' => Constants::CURRENCY
         ];
 
