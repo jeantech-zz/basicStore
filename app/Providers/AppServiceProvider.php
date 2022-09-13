@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\PaymentGateways\PaymentGatewayContract;
+use App\PaymentGateways\Placetopay;
 
 class AppServiceProvider extends ServiceProvider
 {
