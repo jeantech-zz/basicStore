@@ -3,7 +3,10 @@
 namespace Tests\Feature;
 
 use App\Actions\Order\StoreOrderActions;
+use App\Actions\Order\UpdateOrderActions;
+use App\Actions\OrderProduct\StoreUpdateOrderProductActions;
 use App\Constants\Constants;
+use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -26,4 +29,26 @@ class OrderTest extends TestCase
         $this->assertSame((string)$order->status, "INPROCESS");
         $this->assertSame((string)$order->currency,"COP");
     }
+
+    public function test_update_action_order()
+    {
+        $order = StoreOrderActions::execute();
+        $product = Product::factory()->create();
+        $orderProduct = StoreUpdateOrderProductActions::execute( $order, $product);
+
+        $statusInprocess =  Constants::STATUS_ORDER_INPROCESS;
+        $data = [
+            'customer_name' => "Jennifer",
+            'customer_email' => "jeante04@gmail.com",
+            'customer_mobile' => "31242424",
+            'currency' => "EUP",
+            'status' => $statusInprocess,
+        ];
+
+        $order = UpdateOrderActions::execute( $order, $data );
+        $this->assertTrue($order);
+
+    }
+
+
 }
