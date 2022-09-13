@@ -15,12 +15,6 @@
                             <span id="card_title">
                                 {{ __('Order') }}
                             </span>
-
-                             <div class="float-right">
-                                <a href="{{ route('orders.create') }}" class="btn btn-primary btn-sm float-right"  data-placement="left">
-                                  {{ __('Create New') }}
-                                </a>
-                              </div>
                         </div>
                     </div>
                     @if ($message = Session::get('success'))
@@ -35,7 +29,7 @@
                                 <thead class="thead">
                                     <tr>
                                         <th>No</th>
-                                        
+
 										<th>User Id</th>
 										<th>Customer Name</th>
 										<th>Customer Email</th>
@@ -51,7 +45,7 @@
                                     @foreach ($orders as $order)
                                         <tr>
                                             <td>{{ ++$i }}</td>
-                                            
+
 											<td>{{ $order->user_id }}</td>
 											<td>{{ $order->customer_name }}</td>
 											<td>{{ $order->customer_email }}</td>
@@ -59,15 +53,8 @@
 											<td>{{ $order->total }}</td>
 											<td>{{ $order->currency }}</td>
 											<td>{{ $order->status }}</td>
-
                                             <td>
-                                                <form action="{{ route('orders.destroy',$order->id) }}" method="POST">
-                                                    <a class="btn btn-sm btn-primary " href="{{ route('orders.show',$order->id) }}"><i class="fa fa-fw fa-eye"></i> Show</a>
-                                                    <a class="btn btn-sm btn-success" href="{{ route('orders.edit',$order->id) }}"><i class="fa fa-fw fa-edit"></i> Edit</a>
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm"><i class="fa fa-fw fa-trash"></i> Delete</button>
-                                                </form>
+                                                <a class="btn btn-sm btn-success" href="{{ route('orders.edit',$order) }}"><i class="fa fa-fw fa-edit"></i> Pay </a>
                                             </td>
                                         </tr>
                                     @endforeach
