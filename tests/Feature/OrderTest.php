@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Config;
 
 class OrderTest extends TestCase
 {
-    //use RefreshDatabase;
+    use RefreshDatabase;
 
     public function test_order_screen_can_be_rendered():void
     {
@@ -27,7 +27,8 @@ class OrderTest extends TestCase
 
     public function test_create_action_order()
     {
-        $order = StoreOrderActions::execute();
+        $user = User::factory()->create();
+        $order = StoreOrderActions::execute( $user->id);
 
         $this->assertSame((int)$order->total, 1);
         $this->assertSame((string)$order->status, "INPROCESS");
@@ -36,7 +37,8 @@ class OrderTest extends TestCase
 
     public function test_update_action_order()
     {
-        $order = StoreOrderActions::execute();
+        $user = User::factory()->create();
+        $order = StoreOrderActions::execute( $user->id);
         $product = Product::factory()->create();
         $orderProduct = StoreUpdateOrderProductActions::execute( $order, $product);
 
@@ -56,9 +58,12 @@ class OrderTest extends TestCase
 
     public function test_edit_order_screen_can_be_rendered()
     {
-        $order = StoreOrderActions::execute();
         $user = User::factory()->create();
-        $response = $this->get(route('orders.edit', $order));
+
+        $order = StoreOrderActions::execute($user->id);
+        $user = User::factory()->create();
+        $response = $this->actingAs($user)->get(route('orders.edit', $order));
+        //$response = $this->get(route('orders.edit', $order));
 
         $response->assertStatus(200);
     }
@@ -79,7 +84,4 @@ class OrderTest extends TestCase
 
         $this->assertSame((string)$response['status']['status'], "OK");
     }
-
-
-
 }
