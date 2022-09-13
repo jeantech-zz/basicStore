@@ -10,4 +10,6 @@ interface OrdersRepositories
 
     public function orderId(Order $order);
 
+    public function  requestOrder (int $id);
+
 }

@@ -19,4 +19,14 @@ class ColeccionsOrdersRepositories implements OrdersRepositories
         ->first();
     }
 
+    public function requestOrder (int $id)
+    {
+
+        return   Order::select('orders.*', 'requests.processUrl As processUrl')
+        ->join('requests', 'requests.order_id', '=', 'orders.id')
+        ->where('orders.id',$id)
+        ->first();
+    }
+
+
 }
