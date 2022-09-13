@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,7 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Product extends Model
 {
-    
+    use HasFactory;
+
     static $rules = [
 		'code' => 'required',
 		'name' => 'required',
@@ -35,13 +37,19 @@ class Product extends Model
 
     protected $perPage = 20;
 
-    /**
-     * Attributes that should be mass-assignable.
+   /**
+     * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
-    protected $fillable = ['code','name','description','price','quantity','disable_at','image'];
-
-
+    protected $fillable = [
+        'code',
+        'name',
+        'description',
+        'price',
+        'quantity',
+        'disable_at',
+        'image',
+    ];
 
 }
