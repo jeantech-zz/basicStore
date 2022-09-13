@@ -76,6 +76,7 @@ class OrderTest extends TestCase
         $paymentGeteway = new Placetopay();
 
         $response = $paymentGeteway->createSession($arrayPay);
+
         $this->assertSame((string)$response['status']['status'], "OK");
     }
 
