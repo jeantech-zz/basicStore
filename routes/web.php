@@ -27,6 +27,7 @@ Route::get('products/index',[ProductController::class,'index'])->name('products.
 Route::post('/products/addProductOrder/{product}', [ProductController::class, 'addProductOrder'])->name('products.addProductOrder');
 Route::post('/orders/orderPay/', [OrderController::class, 'orderPay'])->name('orders.orderPay');
 Route::get('/orders/showOrder/{orderId}', [OrderController::class, 'showOrder'])->name('orders.showOrder');
+Route::get('/orders/store', [OrderController::class, 'indexStore'])->name('orders.indexStore');
 
 
 
