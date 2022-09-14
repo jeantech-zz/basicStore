@@ -11,7 +11,7 @@ class ColeccionsOrdersRepositories implements OrdersRepositories
         return Order::paginate();
     }
 
-    public function orderId (Order $order):Order
+    public function order(Order $order):Order
     {
        return Order::select('orders.*', 'users.name As userName')
         ->join('users', 'orders.user_id', '=', 'users.id')
@@ -19,15 +19,15 @@ class ColeccionsOrdersRepositories implements OrdersRepositories
         ->first();
     }
 
-    public function requestOrder(int $id):Order
+    public function requestOrder(int $orderId)//:Order
     {
-        return   Order::select('orders.*', 'requests.processUrl As processUrl')
+        return   Order::select('orders.*', 'requests.processUrl As processUrl', 'requests.requestId as requestId')
         ->join('requests', 'requests.order_id', '=', 'orders.id')
-        ->where('orders.id',$id)
+        ->where('orders.id',$orderId)
         ->first();
     }
 
-    public function order(int $idOrder):Order
+    public function orderId(int $idOrder):Order
     {
        return Order::select('orders.*', 'users.name As userName')
         ->join('users', 'orders.user_id', '=', 'users.id')

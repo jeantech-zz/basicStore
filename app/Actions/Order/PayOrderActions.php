@@ -33,7 +33,7 @@ class PayOrderActions
         if ($response['status']['status'] == 'OK') {
             $dataOrder['status'] = Constants::STATUS_ORDER_INPROCESS_PAY;
             $coleccionOrders = new ColeccionsOrdersRepositories;
-            $order = $coleccionOrders->order($dataOrder['id']);
+            $order = $coleccionOrders->orderId($dataOrder['id']);
             UpdateOrderActions::execute($order, $dataOrder);
             return redirect()->away($response['processUrl']);
         }

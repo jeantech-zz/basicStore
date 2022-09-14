@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Actions\Order\PayOrderActions;
 use App\Actions\Order\StoreOrderActions;
 use App\Actions\Order\UpdateOrderActions;
 use App\Actions\OrderProduct\StoreUpdateOrderProductActions;
@@ -10,19 +11,63 @@ use App\Models\Product;
 use App\Models\User;
 use App\PaymentGateways\Placetopay;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Config;
 
 class OrderTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_order_screen_can_be_rendered(): void
+    public function test_order_index_screen_can_be_rendered(): void
     {
         $response = $this->get('orders');
-
         $response->assertStatus(200);
+    }
+
+    public function test_edit_order_screen_can_be_rendered()
+    {
+        $user = User::factory()->create();
+        $order = StoreOrderActions::execute($user->id);
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('orders.edit', $order));
+        $response->assertStatus(200);
+    }
+
+    public function test_order_pay_screen_can_be_rendered()
+    {
+        $user = User::factory()->create();
+        $order = StoreOrderActions::execute($user->id);
+        $response = $this->actingAs($user)->post(route('orders.orderPay', $order));
+
+        $this->assertEquals("http://localhost", $response->getTargetUrl());
+
+    }
+
+    public function test_show_order_screen_can_be_rendered()
+    {
+        $user = User::factory()->create();
+        $order = StoreOrderActions::execute($user->id);
+
+        $arrayPay = [
+            'reference' => $order->id,
+            'total' => $order->total,
+            'returnUrl' => Constants::URL_RETURN_PLACETOPAY. '/' . $order->id,
+            'description' =>  Constants::DESCRIPTION_PLACETOPAY . $order->id,
+            'currency' => $order->currency
+        ];
+
+        $dataOrder = [
+            'id' =>  $order->id,
+            'total' =>  $order->total,
+            'currency' =>  $order->currency,
+        ];
+
+        $paymentGeteway = new Placetopay();
+        PayOrderActions::execute($arrayPay, $dataOrder, $paymentGeteway);
+
+        $response = $this->actingAs($user)->get('orders/showOrder/'.$order->id);
+        $response->assertStatus(200);
+
     }
 
     public function test_create_action_order()
@@ -53,34 +98,5 @@ class OrderTest extends TestCase
 
         $order = UpdateOrderActions::execute($order, $data);
         $this->assertTrue($order);
-    }
-
-    public function test_edit_order_screen_can_be_rendered()
-    {
-        $user = User::factory()->create();
-
-        $order = StoreOrderActions::execute($user->id);
-        $user = User::factory()->create();
-        $response = $this->actingAs($user)->get(route('orders.edit', $order));
-        //$response = $this->get(route('orders.edit', $order));
-
-        $response->assertStatus(200);
-    }
-
-    public function test_payment_geteway()
-    {
-        $arrayPay = [
-            'reference' => 1,
-            'total' => 1000,
-            'returnUrl' =>  Constants::URL_RETURN_PLACETOPAY . '/1',
-            'description' => Constants::DESCRIPTION_PLACETOPAY . " 1",
-            'currency' => Constants::CURRENCY
-        ];
-
-        $paymentGeteway = new Placetopay();
-
-        $response = $paymentGeteway->createSession($arrayPay);
-
-        $this->assertSame((string)$response['status']['status'], "OK");
     }
 }

@@ -7,7 +7,7 @@ use App\Actions\Order\UpdateOrderActions;
 use App\Actions\OrderProduct\StoreUpdateOrderProductActions;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
+use Illuminate\View\View;
 
 /**
  * Class ProductController
@@ -15,7 +15,7 @@ use Illuminate\Http\Response;
  */
 class ProductController extends Controller
 {
-    public function index(): Response
+    public function index(): View
     {
         $products = Product::paginate();
 
