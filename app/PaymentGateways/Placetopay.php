@@ -86,4 +86,12 @@ class Placetopay implements PaymentGatewayContract
             'userAgent' => $this->userAgent
         ];
     }
+
+    public function getSession(string $requestId, array $dataPay)
+    {
+        $request = $this->makeRequest($dataPay);
+        $response = Http::post($this->url.'/'.$requestId, $request);
+
+        return json_decode($response->body(), true);
+    }
 }
