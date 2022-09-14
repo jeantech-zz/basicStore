@@ -22,10 +22,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::Resource('orders', OrderController::class)->only(['index','store','edit', 'update']);
+Route::Resource('orders', OrderController::class)->only(['index','store','edit']);
 Route::get('products/index',[ProductController::class,'index'])->name('products.index');
 Route::post('/products/addProductOrder/{product}', [ProductController::class, 'addProductOrder'])->name('products.addProductOrder');
 Route::post('/orders/orderPay/', [OrderController::class, 'orderPay'])->name('orders.orderPay');
+Route::get('/orders/showOrder/{orderId}', [OrderController::class, 'showOrder'])->name('orders.showOrder');
 
 
 
