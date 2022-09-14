@@ -20,7 +20,9 @@ class OrderTest extends TestCase
 
     public function test_order_index_screen_can_be_rendered(): void
     {
-        $response = $this->get('orders');
+        $user = User::factory()->create();
+        $response =$this->actingAs($user)->get(route('orders.index'));
+
         $response->assertStatus(200);
     }
 
@@ -77,7 +79,7 @@ class OrderTest extends TestCase
         $order = StoreOrderActions::execute($user->id);
 
         $this->assertSame((int)$order->total, 1);
-        $this->assertSame((string)$order->status, "INPROCESS");
+        $this->assertSame((string)$order->status, "CREATED");
         $this->assertSame((string)$order->currency, "COP");
     }
 
