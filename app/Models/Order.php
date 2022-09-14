@@ -25,12 +25,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  */
 class Order extends Model
 {
-
-    static $rules = [
-		'total' => 'required',
-		'status' => 'required',
-    ];
-
     protected $perPage = 20;
 
     /**

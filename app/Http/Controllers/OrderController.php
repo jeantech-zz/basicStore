@@ -40,6 +40,14 @@ class OrderController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * $orders->perPage());
     }
 
+    public function indexStore(): View
+    {
+        $orders = $this->coleccionOrders->listOrderStore();
+
+        return view('order.indexStore', compact('orders'))
+            ->with('i', (request()->input('page', 1) - 1) * $orders->perPage());
+    }
+
     public function edit(Order $order): View
     {
         $order = $this->coleccionOrders->order($order);
