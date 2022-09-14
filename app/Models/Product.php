@@ -26,15 +26,6 @@ class Product extends Model
 {
     use HasFactory;
 
-    static $rules = [
-		'code' => 'required',
-		'name' => 'required',
-		'description' => 'required',
-		'price' => 'required',
-		'quantity' => 'required',
-		'image' => 'required',
-    ];
-
     protected $perPage = 20;
 
    /**
