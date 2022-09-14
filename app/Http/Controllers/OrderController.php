@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Order\PayOrderActions;
+use App\Actions\Order\UpdatePayOrderActions;
 use App\Constants\Constants;
 use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
-use App\PaymentGateways\PaymentGatewayContract;
 use App\PaymentGateways\Placetopay;
 use App\Repositories\Orders\ColeccionsOrdersRepositories;
 use Illuminate\Http\RedirectResponse;
@@ -42,7 +42,7 @@ class OrderController extends Controller
 
     public function edit(Order $order): View
     {
-        $order = $this->coleccionOrders->orderId($order);
+        $order = $this->coleccionOrders->order($order);
         return view('order.edit', compact('order'));
     }
 
@@ -52,10 +52,13 @@ class OrderController extends Controller
         $orderRequest = $this->coleccionOrders->requestOrder($request->id);
         $dataOrder = $request->validated();
 
-        if ($orderRequest == null || $orderRequest->requestId == null) {
+        if ($orderRequest == null || $orderRequest->requestId == null
+        || ($orderRequest->requestId <> null
+        && $orderRequest->status == Constants::STATUS_ORDER_REJECTED)) {
             return  PayOrderActions::execute($arrayPay, $dataOrder, $this->paymentGeteway);
         }
-        return PayOrderActions::execute($arrayPay, $dataOrder, $this->paymentGeteway);
+
+        return redirect()->away($orderRequest->processUrl);
     }
 
     private function makePay(array $data): array
@@ -67,5 +70,21 @@ class OrderController extends Controller
             'description' => $this->descriptionPlacetoPay . ' ' . $data['id'],
             'currency' => $data['currency']
         ];
+    }
+
+
+    public function showOrder(Request $request):View
+    {
+        $order = $this->coleccionOrders->orderId($request->orderId);
+        $data = [
+            'id' =>  $order->id,
+            'total' =>  $order->total,
+            'currency' =>  $order->currency,
+        ];
+        $arrayPay = $this->makePay($data);
+
+        UpdatePayOrderActions::execute($request->orderId, $arrayPay,  $this->paymentGeteway);
+        $order = $this->coleccionOrders->orderId($request->orderId);
+        return view('order.edit', compact('order'));
     }
 }
