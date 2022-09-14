@@ -31,13 +31,13 @@
                                     <tr>
                                         <th>No</th>
 
-										<th>Code</th>
-										<th>Name</th>
-										<th>Description</th>
-										<th>Price</th>
-										<th>Quantity</th>
-										<th>Image</th>
-                                        <th>Add Car</th>
+										<th>{{__("products.label_code")}}</th>
+										<th>{{__("products.label_name")}}</th>
+										<th>{{__("products.label_description")}}</th>
+										<th>{{__("products.label_quantity")}}</th>
+										<th>{{__("products.label_total")}}</th>
+										<th>{{__("products.label_image")}}</th>
+                                        <th>{{__("products.label_add_car")}}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -56,7 +56,7 @@
                                              <form action="{{ route('products.addProductOrder',$product->id) }}" method="POST">
                                                 @csrf
                                                 @method('POST')
-                                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-trash"></i> add</button>
+                                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-fw fa-trash"></i> {{__("products.button_add")}}</button>
                                             </form>
                                             </td>
                                         </tr>

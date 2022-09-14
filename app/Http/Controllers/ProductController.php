@@ -31,6 +31,6 @@ class ProductController extends Controller
         StoreUpdateOrderProductActions::execute($order, $product);
         UpdateOrderActions::execute($order);
 
-        return redirect()->route('orders.index')->with('success', 'Add Product successfully.');
+        return redirect()->route('orders.index')->with('success',  __("products.messages_add_product"));
     }
 }

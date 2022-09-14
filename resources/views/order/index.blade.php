@@ -30,13 +30,13 @@
                                     <tr>
                                         <th>No</th>
 
-										<th>User Id</th>
-										<th>Customer Name</th>
-										<th>Customer Email</th>
-										<th>Customer Mobile</th>
-										<th>Total</th>
-										<th>Currency</th>
-										<th>Status</th>
+										<th>{{__("orders.label_user_id")}}</th>
+										<th>{{__("orders.label_customer_name")}}</th>
+										<th>{{__("orders.label_customer_email")}}</th>
+										<th>{{__("orders.label_customer_mobile")}}</th>
+										<th>{{__("orders.label_total")}}</th>
+										<th>{{__("orders.label_currency")}}</th>
+										<th>{{__("orders.label_status")}}</th>
 
                                         <th></th>
                                     </tr>
@@ -54,7 +54,7 @@
 											<td>{{ $order->currency }}</td>
 											<td>{{ $order->status }}</td>
                                             <td>
-                                                <a class="btn btn-sm btn-success" href="{{ route('orders.edit',$order) }}"><i class="fa fa-fw fa-edit"></i> Pay </a>
+                                                <a class="btn btn-sm btn-success" href="{{ route('orders.edit',$order) }}"><i class="fa fa-fw fa-edit"></i> {{__("orders.button_pay")}} </a>
                                             </td>
                                         </tr>
                                     @endforeach
