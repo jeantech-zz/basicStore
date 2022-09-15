@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Order\StoreOrderActions;
-use App\Actions\Order\UpdateOrderActions;
+use App\Actions\Order\StoreOrderAction;
+use App\Actions\Order\UpdateOrderAction;
 use App\Actions\OrderProduct\StoreUpdateOrderProductActions;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 /**
  * Class ProductController
@@ -15,12 +15,7 @@ use Illuminate\Http\Request;
  */
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function index(): View
     {
         $products = Product::paginate();
 
@@ -28,16 +23,14 @@ class ProductController extends Controller
             ->with('i', (request()->input('page', 1) - 1) * $products->perPage());
     }
 
-    public function addProductOrder (Product $product): RedirectResponse
+    public function addProductOrder(Product $product): RedirectResponse
     {
-        $order = StoreOrderActions::execute();
+        $userId = auth()->id();
+        $order = StoreOrderAction::execute($userId);
 
-        $orderProduct = StoreUpdateOrderProductActions::execute($order, $product);
+        StoreUpdateOrderProductActions::execute($order, $product);
+        UpdateOrderAction::execute($order);
 
-        $orderUpdate = UpdateOrderActions::execute($order);
-
-        return redirect()->route('orders.index')->with('success', 'Add Product successfully.');
+        return redirect()->route('orders.index')->with('success',  __("products.messages_add_product"));
     }
-
-
 }

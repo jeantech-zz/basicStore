@@ -19,7 +19,7 @@
                         <form method="POST" action="{{ route('orders.orderPay', $order) }}"  role="form" enctype="multipart/form-data">
 
                             @csrf
-dd
+
                             @include('order.form')
 
                         </form>

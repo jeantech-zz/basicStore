@@ -5,52 +5,50 @@ namespace App\Actions\Order;
 use App\Models\Order;
 use App\Models\OrderProduct;
 
-class UpdateOrderActions
+class UpdateOrderAction
 {
-    public static function execute(Order $order, array $data = [] ): bool
+    public static function execute(Order $order, array $data = []): bool
     {
         $orderRecord = Order::find($order->id);
 
-        $orderProduct = OrderProduct::Where('order_id', $order->id )->get();
+        $orderProduct = OrderProduct::Where('order_id', $order->id)->get();
         $totalOrderProduct = $orderProduct->sum('amount');
-
 
         $dataRecord = [];
 
-        if ($data <> null ){
-            if ($data['customer_name'] <>   $orderRecord->customer_name ){
+        if ($data <> null) {
+            if (isset($data['customer_name']) && ($data['customer_name'] <>   $orderRecord->customer_name)) {
                 $dataRecord['customer_name']  = $data['customer_name'];
-            }else{
+            } else {
                 $dataRecord['customer_name']  = $orderRecord->customer_name;
             }
 
-            if ($data['customer_email'] <>   $orderRecord->customer_email){
+            if (isset($data['customer_email']) && ($data['customer_email'] <>   $orderRecord->customer_email)) {
                 $dataRecord['customer_email']  = $data['customer_email'];
-            }else{
+            } else {
                 $dataRecord['customer_email']  = $orderRecord->customer_email;
             }
 
-            if ($data['customer_mobile'] <>   $orderRecord->customer_mobile){
+            if (isset($data['customer_mobile']) && ($data['customer_mobile'] <>   $orderRecord->customer_mobile)) {
                 $dataRecord['customer_mobile']  = $data['customer_mobile'];
-            }else{
+            } else {
                 $dataRecord['customer_mobile']  = $orderRecord->customer_mobile;
             }
 
-            if ($data['currency'] <>   $orderRecord->currency){
+            if (isset($data['currency']) && ($data['currency'] <>   $orderRecord->currency)) {
                 $dataRecord['currency']  = $data['currency'];
-            }else{
+            } else {
                 $dataRecord['currency']  = $orderRecord->currency;
             }
 
-            if ($data['status'] <>   $orderRecord->status){
+            if (isset($data['status']) && ($data['status'] <> $orderRecord->status)) {
                 $dataRecord['status']  = $data['status'];
-            }else{
+            } else {
                 $dataRecord['status']  = $orderRecord->status;
             }
 
             $dataRecord['total']  = $totalOrderProduct;
-
-        }else{
+        } else {
             $dataRecord = [
                 'customer_name' =>  $order->customer_name,
                 'customer_email' => $order->customer_email,
@@ -59,7 +57,6 @@ class UpdateOrderActions
                 'currency' => $order->currency,
                 'status' => $order->status,
             ];
-
         }
 
         $record = $orderRecord->update([

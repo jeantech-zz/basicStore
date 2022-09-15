@@ -3,6 +3,7 @@
 namespace App\PaymentGateways;
 
 use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
 use Carbon\Carbon;
 use DateTimeZone;
 use Illuminate\Support\Facades\Http;
@@ -17,27 +18,23 @@ class Placetopay implements PaymentGatewayContract
     private $ipAddress;
     private $userAgent;
     private $url;
-    private $currency;
-    private $description;
     private $loginPlacetoPay;
-    private $descriptionPlacetoPay;
 
     public function __construct()
     {
-        $this->ipAddress = Constants::IP_ADDRESS_PLACETOPAY;
-        $this->userAgent = Constants::USER_AGENT_PLACETOPAY;
-        $this->url = Constants::URL_PLACETOPAY;
-        $this->currency = Constants::CURRENCY;
-        $this->loginPlacetoPay = Constants::LOGIN_PLACETOPAY;
+        $this->ipAddress = PaymentGatewayConstants::IP_ADDRESS_PLACETOPAY;
+        $this->userAgent = PaymentGatewayConstants::USER_AGENT_PLACETOPAY;
+        $this->url = PaymentGatewayConstants::URL_PLACETOPAY;
+        $this->loginPlacetoPay = PaymentGatewayConstants::LOGIN_PLACETOPAY;
     }
 
-    public function createSession (array $dataPay)
+    public function createSession(array $dataPay)
     {
         $request = $this->makeRequest($dataPay);
 
         $response = Http::post($this->url, $request);
 
-       return json_decode($response->body(), true);
+        return json_decode($response->body(), true);
     }
 
 
@@ -71,14 +68,14 @@ class Placetopay implements PaymentGatewayContract
     private function makePayment(array $data): array
     {
         return [
-                'reference' =>  $data['reference'],
-                'description' =>  $data['description'],
-                'amount' =>   [
-                    'currency' => $data['currency'],
-                    'total' =>  $data['total']
-                ],
-                'allowPartial' => false
-            ];
+            'reference' =>  $data['reference'],
+            'description' =>  $data['description'],
+            'amount' =>   [
+                'currency' => $data['currency'],
+                'total' =>  $data['total']
+            ],
+            'allowPartial' => false
+        ];
     }
 
     private function extraAttributes(array $data): array
@@ -89,5 +86,13 @@ class Placetopay implements PaymentGatewayContract
             'ipAddress' =>  $this->ipAddress,
             'userAgent' => $this->userAgent
         ];
+    }
+
+    public function getSession(string $requestId, array $dataPay)
+    {
+        $request = $this->makeRequest($dataPay);
+        $response = Http::post($this->url.'/'.$requestId, $request);
+
+        return json_decode($response->body(), true);
     }
 }

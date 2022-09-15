@@ -8,8 +8,10 @@ interface OrdersRepositories
 {
     public function listOrder();
 
-    public function orderId(Order $order);
+    public function order(Order $order);
 
-    public function  requestOrder (int $id);
+    public function requestOrder (int $orderId);
+
+    public function orderId(int $idOrder);
 
 }

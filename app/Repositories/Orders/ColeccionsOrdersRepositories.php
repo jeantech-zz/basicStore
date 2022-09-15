@@ -8,25 +8,38 @@ class ColeccionsOrdersRepositories implements OrdersRepositories
 {
     public function listOrder ()
     {
+        $userId = auth()->id();
+        return Order::where('orders.user_id',$userId)->paginate();
+    }
+
+    public function listOrderStore ()
+    {
         return Order::paginate();
     }
 
-    public function orderId (Order $order)
+    public function order(Order $order):Order
     {
+        $userId = auth()->id();
         return Order::select('orders.*', 'users.name As userName')
-        ->join('users', 'orders.user_id', '=', 'users.id')
-        ->where('orders.id',$order->id)
-        ->first();
+            ->join('users', 'orders.user_id', '=', 'users.id')
+            ->where('orders.id',$order->id)
+            ->first();
     }
 
-    public function requestOrder (int $id)
+    public function requestOrder(int $orderId)//:Order
     {
-
-        return   Order::select('orders.*', 'requests.processUrl As processUrl')
+        return   Order::select('orders.*', 'requests.processUrl As processUrl', 'requests.requestId as requestId')
         ->join('requests', 'requests.order_id', '=', 'orders.id')
-        ->where('orders.id',$id)
+        ->where('orders.id',$orderId)
         ->first();
     }
 
+    public function orderId(int $idOrder):Order
+    {
+       return Order::select('orders.*', 'users.name As userName')
+        ->join('users', 'orders.user_id', '=', 'users.id')
+        ->where('orders.id',$idOrder)
+        ->first();
+    }
 
 }
