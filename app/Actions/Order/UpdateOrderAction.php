@@ -5,7 +5,7 @@ namespace App\Actions\Order;
 use App\Models\Order;
 use App\Models\OrderProduct;
 
-class UpdateOrderActions
+class UpdateOrderAction
 {
     public static function execute(Order $order, array $data = []): bool
     {

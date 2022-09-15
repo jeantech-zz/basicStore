@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Order\PayOrderActions;
-use App\Actions\Order\UpdatePayOrderActions;
+use App\Actions\Order\PayOrderAction;
+use App\Actions\Order\UpdatePayOrderAction;
 use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
+use App\Constants\Status\StatusConstants;
 use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
 use App\PaymentGateways\Placetopay;
@@ -19,17 +21,15 @@ use Illuminate\View\View;
  */
 class OrderController extends Controller
 {
-    private $returnUrl;
-    private $descriptionPlacetoPay;
-    private ColeccionsOrdersRepositories $coleccionOrders;
-    private Placetopay $paymentGeteway;
-
-    public function __construct()
+    public function __construct(
+        private ColeccionsOrdersRepositories $coleccionOrders,
+        private Placetopay $paymentGeteway,
+        private $returnUrl = PaymentGatewayConstants::URL_RETURN_PLACETOPAY,
+        private $descriptionPlacetoPay = PaymentGatewayConstants::DESCRIPTION_PLACETOPAY
+    )
     {
         $this->coleccionOrders = new ColeccionsOrdersRepositories;
         $this->paymentGeteway = new Placetopay;
-        $this->returnUrl = Constants::URL_RETURN_PLACETOPAY;
-        $this->descriptionPlacetoPay = Constants::DESCRIPTION_PLACETOPAY;
     }
 
     public function index(): View
@@ -62,8 +62,8 @@ class OrderController extends Controller
 
         if ($orderRequest == null || $orderRequest->requestId == null
         || ($orderRequest->requestId <> null
-        && $orderRequest->status == Constants::STATUS_ORDER_REJECTED)) {
-            return  PayOrderActions::execute($arrayPay, $dataOrder, $this->paymentGeteway);
+        && $orderRequest->status == StatusConstants::STATUS_ORDER_REJECTED)) {
+            return  PayOrderAction::execute($arrayPay, $dataOrder, $this->paymentGeteway);
         }
 
         return redirect()->away($orderRequest->processUrl);
@@ -91,7 +91,7 @@ class OrderController extends Controller
         ];
         $arrayPay = $this->makePay($data);
 
-        UpdatePayOrderActions::execute($request->orderId, $arrayPay,  $this->paymentGeteway);
+        UpdatePayOrderAction::execute($request->orderId, $arrayPay,  $this->paymentGeteway);
         $order = $this->coleccionOrders->orderId($request->orderId);
         return view('order.edit', compact('order'));
     }

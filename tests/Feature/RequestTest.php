@@ -2,9 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Actions\Order\StoreOrderActions;
+use App\Actions\Order\StoreOrderAction;
 use App\Actions\Request\StoreRequestActions;
 use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
 use App\Models\User;
 use App\PaymentGateways\Placetopay;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,13 +18,13 @@ class RequestTest extends TestCase
     public function test_store_request_actions()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute($user->id);
+        $order = StoreOrderAction::execute($user->id);
         $arrayPay = [
             'reference' => 1,
             'total' => 1000,
-            'returnUrl' =>  Constants::URL_RETURN_PLACETOPAY . '/1',
-            'description' => Constants::DESCRIPTION_PLACETOPAY . " 1",
-            'currency' => Constants::CURRENCY
+            'returnUrl' =>  PaymentGatewayConstants::URL_RETURN_PLACETOPAY . '/1',
+            'description' => PaymentGatewayConstants::DESCRIPTION_PLACETOPAY . " 1",
+            'currency' => PaymentGatewayConstants::CURRENCY
         ];
 
         $paymentGeteway = new Placetopay();
@@ -33,8 +34,8 @@ class RequestTest extends TestCase
         $data = [
             'order_id' => $order->id,
             'reference' => "1",
-            'returnUrl' => Constants::URL_RETURN_PLACETOPAY,
-            'description' => Constants::DESCRIPTION_PLACETOPAY,
+            'returnUrl' => PaymentGatewayConstants::URL_RETURN_PLACETOPAY,
+            'description' => PaymentGatewayConstants::DESCRIPTION_PLACETOPAY,
             'response' => json_encode($responsePay),
             'processUrl' => $responsePay['processUrl'],
             'requestId' => $responsePay['requestId']

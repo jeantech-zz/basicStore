@@ -2,12 +2,12 @@
 
 namespace Tests\Feature;
 
-use App\Actions\Order\PayOrderActions;
-use App\Actions\Order\StoreOrderActions;
-use App\Actions\Order\UpdateOrderActions;
-use App\Actions\Order\UpdatePayOrderActions;
+use App\Actions\Order\PayOrderAction;
+use App\Actions\Order\StoreOrderAction;
+use App\Actions\Order\UpdateOrderAction;
 use App\Actions\OrderProduct\StoreUpdateOrderProductActions;
-use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
+use App\Constants\Status\StatusConstants;
 use App\Models\Product;
 use App\Models\User;
 use App\PaymentGateways\Placetopay;
@@ -29,7 +29,7 @@ class OrderTest extends TestCase
     public function test_edit_order_screen_can_be_rendered()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute($user->id);
+        $order = StoreOrderAction::execute($user->id);
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get(route('orders.edit', $order));
@@ -39,7 +39,7 @@ class OrderTest extends TestCase
     public function test_order_pay_screen_can_be_rendered()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute($user->id);
+        $order = StoreOrderAction::execute($user->id);
         $response = $this->actingAs($user)->post(route('orders.orderPay', $order));
 
         $this->assertEquals("http://localhost", $response->getTargetUrl());
@@ -49,13 +49,13 @@ class OrderTest extends TestCase
     public function test_show_order_screen_can_be_rendered()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute($user->id);
+        $order = StoreOrderAction::execute($user->id);
 
         $arrayPay = [
             'reference' => $order->id,
             'total' => $order->total,
-            'returnUrl' => Constants::URL_RETURN_PLACETOPAY. '/' . $order->id,
-            'description' =>  Constants::DESCRIPTION_PLACETOPAY . $order->id,
+            'returnUrl' => PaymentGatewayConstants::URL_RETURN_PLACETOPAY. '/' . $order->id,
+            'description' =>  PaymentGatewayConstants::DESCRIPTION_PLACETOPAY . $order->id,
             'currency' => $order->currency
         ];
 
@@ -66,7 +66,7 @@ class OrderTest extends TestCase
         ];
 
         $paymentGeteway = new Placetopay();
-        PayOrderActions::execute($arrayPay, $dataOrder, $paymentGeteway);
+        PayOrderAction::execute($arrayPay, $dataOrder, $paymentGeteway);
 
         $response = $this->actingAs($user)->get('orders/showOrder/'.$order->id);
         $response->assertStatus(200);
@@ -76,7 +76,7 @@ class OrderTest extends TestCase
     public function test_create_action_order()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute($user->id);
+        $order = StoreOrderAction::execute($user->id);
 
         $this->assertSame((int)$order->total, 1);
         $this->assertSame((string)$order->status, "CREATED");
@@ -86,11 +86,11 @@ class OrderTest extends TestCase
     public function test_update_action_order()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute($user->id);
+        $order = StoreOrderAction::execute($user->id);
         $product = Product::factory()->create();
         $orderProduct = StoreUpdateOrderProductActions::execute($order, $product);
 
-        $statusCreate =  Constants::STATUS_ORDER_CREATED;
+        $statusCreate =  StatusConstants::STATUS_ORDER_CREATED;
         $data = [
             'customer_name' => "Jennifer",
             'customer_email' => "jeante04@gmail.com",
@@ -99,20 +99,20 @@ class OrderTest extends TestCase
             'status' => $statusCreate,
         ];
 
-        $order = UpdateOrderActions::execute($order, $data);
+        $order = UpdateOrderAction::execute($order, $data);
         $this->assertTrue($order);
     }
 
     public function test_pay_order_action_order()
     {
         $user = User::factory()->create();
-        $order = StoreOrderActions::execute($user->id);
+        $order = StoreOrderAction::execute($user->id);
 
         $arrayPay = [
             'reference' => $order->id,
             'total' => $order->total,
-            'returnUrl' => Constants::URL_RETURN_PLACETOPAY. '/' . $order->id,
-            'description' =>  Constants::DESCRIPTION_PLACETOPAY . $order->id,
+            'returnUrl' => PaymentGatewayConstants::URL_RETURN_PLACETOPAY. '/' . $order->id,
+            'description' =>  PaymentGatewayConstants::DESCRIPTION_PLACETOPAY . $order->id,
             'currency' => $order->currency
         ];
 
@@ -123,10 +123,10 @@ class OrderTest extends TestCase
         ];
 
         $paymentGeteway = new Placetopay();
-        $response = PayOrderActions::execute($arrayPay, $dataOrder, $paymentGeteway);
+        $response = PayOrderAction::execute($arrayPay, $dataOrder, $paymentGeteway);
 
         $urlRedirect = substr($response->getTargetUrl(),0,43);
-        $this->assertEquals( Constants::URL_REDIRECT_PLACETOPAY, $urlRedirect);
+        $this->assertEquals( PaymentGatewayConstants::URL_REDIRECT_PLACETOPAY, $urlRedirect);
     }
 
 }
