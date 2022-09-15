@@ -6,7 +6,7 @@ use App\Constants\Constants;
 use App\PaymentGateways\PaymentGatewayContract;
 use App\Repositories\Orders\ColeccionsOrdersRepositories;
 
-class UpdatePayOrderActions
+class UpdatePayOrderAction
 {
     public static function execute(int $orderId, array $arrayPay, PaymentGatewayContract $paymentGeteway): void
     {
@@ -25,6 +25,6 @@ class UpdatePayOrderActions
         }
 
         $order = $coleccionOrders->orderId($orderId);
-        UpdateOrderActions::execute($order, $dataOrder);
+        UpdateOrderAction::execute($order, $dataOrder);
     }
 }

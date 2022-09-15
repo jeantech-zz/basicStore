@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Order\StoreOrderActions;
-use App\Actions\Order\UpdateOrderActions;
+use App\Actions\Order\StoreOrderAction;
+use App\Actions\Order\UpdateOrderAction;
 use App\Actions\OrderProduct\StoreUpdateOrderProductActions;
 use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
@@ -26,10 +26,10 @@ class ProductController extends Controller
     public function addProductOrder(Product $product): RedirectResponse
     {
         $userId = auth()->id();
-        $order = StoreOrderActions::execute($userId);
+        $order = StoreOrderAction::execute($userId);
 
         StoreUpdateOrderProductActions::execute($order, $product);
-        UpdateOrderActions::execute($order);
+        UpdateOrderAction::execute($order);
 
         return redirect()->route('orders.index')->with('success',  __("products.messages_add_product"));
     }

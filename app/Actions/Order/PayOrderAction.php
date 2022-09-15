@@ -10,7 +10,7 @@ use App\Repositories\Orders\ColeccionsOrdersRepositories;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Config;
 
-class PayOrderActions
+class PayOrderAction
 {
     public static function execute(array $dataPay, array $dataOrder, PaymentGatewayContract $paymentGeteway): RedirectResponse
     {
@@ -34,12 +34,12 @@ class PayOrderActions
             $dataOrder['status'] = Constants::STATUS_ORDER_INPROCESS_PAY;
             $coleccionOrders = new ColeccionsOrdersRepositories;
             $order = $coleccionOrders->orderId($dataOrder['id']);
-            UpdateOrderActions::execute($order, $dataOrder);
+            UpdateOrderAction::execute($order, $dataOrder);
             return redirect()->away($response['processUrl']);
         }
 
         $dataOrder['status'] = Constants::STATUS_ORDER_REJECTED;
-        UpdateOrderActions::execute($dataOrder['id'], $dataOrder);
+        UpdateOrderAction::execute($dataOrder['id'], $dataOrder);
         return redirect()->route('orders.edit', $dataOrder)->with('success', 'Order Reject successfully.');
     }
 }
