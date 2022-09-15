@@ -2,10 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
 use App\PaymentGateways\Placetopay;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class PaymentGatewayTest extends TestCase
@@ -15,9 +13,9 @@ class PaymentGatewayTest extends TestCase
         $arrayPay = [
             'reference' => 1,
             'total' => 1000,
-            'returnUrl' =>  Constants::URL_RETURN_PLACETOPAY . '/1',
-            'description' => Constants::DESCRIPTION_PLACETOPAY . " 1",
-            'currency' => Constants::CURRENCY
+            'returnUrl' =>  PaymentGatewayConstants::URL_RETURN_PLACETOPAY . '/1',
+            'description' => PaymentGatewayConstants::DESCRIPTION_PLACETOPAY . " 1",
+            'currency' => PaymentGatewayConstants::CURRENCY
         ];
 
         $paymentGeteway = new Placetopay();
@@ -32,9 +30,9 @@ class PaymentGatewayTest extends TestCase
         $arrayPay = [
             'reference' => 1,
             'total' => 1000,
-            'returnUrl' =>  Constants::URL_RETURN_PLACETOPAY . '/1',
-            'description' => Constants::DESCRIPTION_PLACETOPAY . " 1",
-            'currency' => Constants::CURRENCY
+            'returnUrl' =>  PaymentGatewayConstants::URL_RETURN_PLACETOPAY . '/1',
+            'description' => PaymentGatewayConstants::DESCRIPTION_PLACETOPAY . " 1",
+            'currency' => PaymentGatewayConstants::CURRENCY
         ];
         $paymentGeteway = new Placetopay();
         $responsePay = $paymentGeteway->createSession($arrayPay);

@@ -2,15 +2,16 @@
 
 namespace App\Actions\Order;
 
-use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
+use App\Constants\Status\StatusConstants;
 use App\Models\Order;
 
 class StoreOrderAction
 {
     public static function execute($userId): Order
     {
-        $statusInprocess =  Constants::STATUS_ORDER_CREATED;
-        $currency = Constants::CURRENCY;
+        $statusInprocess =  StatusConstants::STATUS_ORDER_CREATED;
+        $currency = PaymentGatewayConstants::CURRENCY;
 
         $order = Order::firstOrCreate([
             'user_id' => $userId,

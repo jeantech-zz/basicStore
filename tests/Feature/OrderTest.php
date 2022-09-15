@@ -6,7 +6,8 @@ use App\Actions\Order\PayOrderAction;
 use App\Actions\Order\StoreOrderAction;
 use App\Actions\Order\UpdateOrderAction;
 use App\Actions\OrderProduct\StoreUpdateOrderProductActions;
-use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
+use App\Constants\Status\StatusConstants;
 use App\Models\Product;
 use App\Models\User;
 use App\PaymentGateways\Placetopay;
@@ -53,8 +54,8 @@ class OrderTest extends TestCase
         $arrayPay = [
             'reference' => $order->id,
             'total' => $order->total,
-            'returnUrl' => Constants::URL_RETURN_PLACETOPAY. '/' . $order->id,
-            'description' =>  Constants::DESCRIPTION_PLACETOPAY . $order->id,
+            'returnUrl' => PaymentGatewayConstants::URL_RETURN_PLACETOPAY. '/' . $order->id,
+            'description' =>  PaymentGatewayConstants::DESCRIPTION_PLACETOPAY . $order->id,
             'currency' => $order->currency
         ];
 
@@ -89,7 +90,7 @@ class OrderTest extends TestCase
         $product = Product::factory()->create();
         $orderProduct = StoreUpdateOrderProductActions::execute($order, $product);
 
-        $statusCreate =  Constants::STATUS_ORDER_CREATED;
+        $statusCreate =  StatusConstants::STATUS_ORDER_CREATED;
         $data = [
             'customer_name' => "Jennifer",
             'customer_email' => "jeante04@gmail.com",
@@ -110,8 +111,8 @@ class OrderTest extends TestCase
         $arrayPay = [
             'reference' => $order->id,
             'total' => $order->total,
-            'returnUrl' => Constants::URL_RETURN_PLACETOPAY. '/' . $order->id,
-            'description' =>  Constants::DESCRIPTION_PLACETOPAY . $order->id,
+            'returnUrl' => PaymentGatewayConstants::URL_RETURN_PLACETOPAY. '/' . $order->id,
+            'description' =>  PaymentGatewayConstants::DESCRIPTION_PLACETOPAY . $order->id,
             'currency' => $order->currency
         ];
 
@@ -125,7 +126,7 @@ class OrderTest extends TestCase
         $response = PayOrderAction::execute($arrayPay, $dataOrder, $paymentGeteway);
 
         $urlRedirect = substr($response->getTargetUrl(),0,43);
-        $this->assertEquals( Constants::URL_REDIRECT_PLACETOPAY, $urlRedirect);
+        $this->assertEquals( PaymentGatewayConstants::URL_REDIRECT_PLACETOPAY, $urlRedirect);
     }
 
 }

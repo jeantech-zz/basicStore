@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\Order\PayOrderAction;
 use App\Actions\Order\UpdatePayOrderAction;
 use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
+use App\Constants\Status\StatusConstants;
 use App\Http\Requests\Order\UpdateRequest;
 use App\Models\Order;
 use App\PaymentGateways\Placetopay;
@@ -22,8 +24,8 @@ class OrderController extends Controller
     public function __construct(
         private ColeccionsOrdersRepositories $coleccionOrders,
         private Placetopay $paymentGeteway,
-        private $returnUrl = Constants::URL_RETURN_PLACETOPAY,
-        private $descriptionPlacetoPay = Constants::DESCRIPTION_PLACETOPAY
+        private $returnUrl = PaymentGatewayConstants::URL_RETURN_PLACETOPAY,
+        private $descriptionPlacetoPay = PaymentGatewayConstants::DESCRIPTION_PLACETOPAY
     )
     {
         $this->coleccionOrders = new ColeccionsOrdersRepositories;
@@ -60,7 +62,7 @@ class OrderController extends Controller
 
         if ($orderRequest == null || $orderRequest->requestId == null
         || ($orderRequest->requestId <> null
-        && $orderRequest->status == Constants::STATUS_ORDER_REJECTED)) {
+        && $orderRequest->status == StatusConstants::STATUS_ORDER_REJECTED)) {
             return  PayOrderAction::execute($arrayPay, $dataOrder, $this->paymentGeteway);
         }
 

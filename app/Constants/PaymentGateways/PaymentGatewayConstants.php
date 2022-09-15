@@ -1,17 +1,12 @@
 <?php
 
-namespace App\Constants;
+namespace App\Constants\PaymentGateways;
 
 /**
  * Class Constant.
  */
-final class Constants
+final class PaymentGatewayConstants
 {
-    public const STATUS_ORDER_INPROCESS = 'INPROCESS';
-    public const STATUS_ORDER_INPROCESS_PAY = 'INPROCESS_PAY';
-    public const STATUS_ORDER_CREATED = 'CREATED';
-    public const STATUS_ORDER_PAYED = 'PAYED';
-    public const STATUS_ORDER_REJECTED = 'REJECTED';
     public const CURRENCY = 'COP';
     public const IP_ADDRESS_PLACETOPAY =  '127.0.0.1';
     public const USER_AGENT_PLACETOPAY =  'PlacetoPay Sandbox';

@@ -3,6 +3,7 @@
 namespace App\PaymentGateways;
 
 use App\Constants\Constants;
+use App\Constants\PaymentGateways\PaymentGatewayConstants;
 use Carbon\Carbon;
 use DateTimeZone;
 use Illuminate\Support\Facades\Http;
@@ -21,10 +22,10 @@ class Placetopay implements PaymentGatewayContract
 
     public function __construct()
     {
-        $this->ipAddress = Constants::IP_ADDRESS_PLACETOPAY;
-        $this->userAgent = Constants::USER_AGENT_PLACETOPAY;
-        $this->url = Constants::URL_PLACETOPAY;
-        $this->loginPlacetoPay = Constants::LOGIN_PLACETOPAY;
+        $this->ipAddress = PaymentGatewayConstants::IP_ADDRESS_PLACETOPAY;
+        $this->userAgent = PaymentGatewayConstants::USER_AGENT_PLACETOPAY;
+        $this->url = PaymentGatewayConstants::URL_PLACETOPAY;
+        $this->loginPlacetoPay = PaymentGatewayConstants::LOGIN_PLACETOPAY;
     }
 
     public function createSession(array $dataPay)
